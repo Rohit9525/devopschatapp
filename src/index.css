@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+ 
+    --primary: 222.1 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+ 
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+ 
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+ 
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+ 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+ 
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+ 
+    --ring: 222.1 83.2% 53.3%;
+ 
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+ 
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+ 
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+ 
+    --primary: 222.1 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+ 
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+ 
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+ 
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+ 
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+ 
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 
+           disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 
+           focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 
+           disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200;
+  }
+
+  .input-primary {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 
+           focus:ring-blue-500 focus:border-transparent dark:bg-gray-800 
+           dark:border-gray-700 dark:text-white transition-colors duration-200;
+  }
+
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 
+           transition-colors duration-200;
+  }
+
+  .message-bubble {
+    @apply max-w-[70%] rounded-lg p-3 mb-2;
+  }
+
+  .message-bubble-sent {
+    @apply bg-blue-600 text-white ml-auto rounded-br-none;
+  }
+
+  .message-bubble-received {
+    @apply bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white 
+           rounded-bl-none;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
