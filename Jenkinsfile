@@ -2,51 +2,56 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "chatapp"
-        CONTAINER_NAME = "chatcontainer"
-        PORT = "3000:80"
+        IMAGE_NAME = "devopschatapp"
+        CONTAINER_NAME = "chatapp-container"
+
+        // Hardcoded Firebase Environment Variables
+        VITE_FIREBASE_API_KEY = "AIzaSyBozHsuJ707-bsq3e-mTCIdCGKZFtqN7y0"
+        VITE_FIREBASE_AUTH_DOMAIN = "ocean-b2a6d.firebaseapp.com"
+        VITE_FIREBASE_PROJECT_ID = "ocean-b2a6d"
+        VITE_FIREBASE_STORAGE_BUCKET = "ocean-b2a6d.firebasestorage.app"
+        VITE_FIREBASE_MESSAGING_SENDER_ID = "413194511016"
+        VITE_FIREBASE_APP_ID = "1:413194511016:web:67685647c982c2f44bd89d"
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                echo 'Cloning the repository...'
                 git 'https://github.com/Rohit9525/devopschatapp.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                echo 'Building Docker image...'
-                script {
-                    sh 'docker build -t ${DOCKER_IMAGE} .'
-                }
+                sh """
+                docker build --build-arg VITE_FIREBASE_API_KEY=${VITE_FIREBASE_API_KEY} \
+                             --build-arg VITE_FIREBASE_AUTH_DOMAIN=${VITE_FIREBASE_AUTH_DOMAIN} \
+                             --build-arg VITE_FIREBASE_PROJECT_ID=${VITE_FIREBASE_PROJECT_ID} \
+                             --build-arg VITE_FIREBASE_STORAGE_BUCKET=${VITE_FIREBASE_STORAGE_BUCKET} \
+                             --build-arg VITE_FIREBASE_MESSAGING_SENDER_ID=${VITE_FIREBASE_MESSAGING_SENDER_ID} \
+                             --build-arg VITE_FIREBASE_APP_ID=${VITE_FIREBASE_APP_ID} \
+                             -t ${IMAGE_NAME} .
+                """
             }
         }
 
-        stage('Stop Existing Container') {
+        stage('Run Container') {
             steps {
-                echo 'Stopping existing container if it is running...'
-                script {
-                    sh 'docker ps -q --filter "name=${CONTAINER_NAME}" | xargs -r docker stop'
-                }
-            }
-        }
-
-        stage('Start New Container') {
-            steps {
-                echo 'Starting the new container...'
-                script {
-                    sh 'docker ps -a -q --filter "name=${CONTAINER_NAME}" | xargs -r docker start || docker run -d --name ${CONTAINER_NAME} -p ${PORT} ${DOCKER_IMAGE}'
-                }
+                sh """
+                docker stop ${CONTAINER_NAME} || true
+                docker rm ${CONTAINER_NAME} || true
+                docker run -d --name ${CONTAINER_NAME} -p 80:3000 ${IMAGE_NAME}
+                """
             }
         }
     }
 
     post {
-        always {
-            echo 'Cleaning up workspace...'
-            cleanWs()
+        success {
+            echo "Deployment Successful! App is running on http://localhost:80"
+        }
+        failure {
+            echo "Deployment Failed! Check the logs."
         }
     }
 }
